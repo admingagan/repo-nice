@@ -2,10 +2,11 @@ name: CI
 on:
   push:
     branches: [ "main" ]
-  workflow_dispatch:
+  pull_request:
+    branches: [ "main" ]
 jobs:
-  job1:
-    runs-on: myserver
+  build:
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v3
 
@@ -15,13 +16,13 @@ jobs:
       - name: Run a multi-line script
         run: |
           echo Add other actions to build,
-          sleep 30
-          uname -a
-          cat /etc/os-release
           echo test, and deploy your project
       - name: Create a file
         run: touch /tmp/gagandeep1
-      - name: list files
-        run: ls /tmp
-
-        
+  test:
+    runs-on: self-hosted
+    steps:
+      - name: Run test cases
+        run: echo "Test running"
+      - name: List files
+        run: ls -l /tmp/
