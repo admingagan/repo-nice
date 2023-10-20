@@ -7,17 +7,14 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # continue-on-error: true     IF you want to continue even on failure
     steps:
       - uses: actions/checkout@v3
 
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      - name: Run a multi-line script
+      - name: Build
         run: |
-          echo Add other actions to build,
-          sleep 30
-          echo test, and deploy your project
+          cho "build going on"  ## Mistake to fail the build job
+          sleep 10
       - name: Create a file
         run: touch /tmp/gagandeep1
   test:
@@ -26,6 +23,15 @@ jobs:
       - name: Run test cases
         run: |
           echo "Test running"
-          sleep 30
-      - name: List files
-        run: ls -l /tmp/
+          sleep 10
+    needs: build   ## Will only run after successful completion of build job
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Do deployment
+        run: |
+          echo "deployment being done"
+          sleep 10
+    if: ${{ always() }}
+    needs: build 
+    ## Will run even after unsuccessful completion of build job
